@@ -30,7 +30,7 @@ func LoadConfig() (*Config, error) {
 		RateLimitDurationSeconds: getEnvAsInt("RATE_LIMIT_DURATION_SECONDS"),
 		RedisHost:                getEnv("REDIS_HOST"),
 		RedisPort:                getEnv("REDIS_PORT"),
-		RedisPassword:            getEnv("REDIS_PASSWORD"),
+		RedisPassword:            getEnvOptional("REDIS_PASSWORD"),
 		RedisDB:                  getEnvAsInt("REDIS_DB"),
 		ServerPort:               getEnv("SERVER_PORT"),
 	}
@@ -57,6 +57,10 @@ func getEnv(key string) string {
 	}
 
 	panic("erro ao ler a variavel de ambiente: " + key)
+}
+
+func getEnvOptional(key string) string {
+	return os.Getenv(key)
 }
 
 func (c *Config) GetLimitDuration() time.Duration {
